@@ -14,7 +14,7 @@
  * END HEADER
  */
 
-import { app, BrowserWindow, FileFilter, ipcMain, MessageBoxReturnValue } from 'electron'
+import { app, BrowserWindow, FileFilter, ipcMain, MessageBoxReturnValue, Menu, Tray } from 'electron'
 import path from 'path'
 import fs from 'fs'
 
@@ -38,6 +38,7 @@ export default class Zettlr {
   _openPaths: any
   _fsal: FSAL
   _commands: any[]
+  tray: any
   private readonly _windowManager: WindowManager
   private readonly isShownFor: string[]
 
@@ -50,6 +51,7 @@ export default class Zettlr {
     this.editFlag = false // Is the current opened file edited?
     this._openPaths = [] // Holds all currently opened paths.
     this.isShownFor = [] // Contains all files for which remote notifications are currently shown
+    this.tray = null // variable use to set the tray icon
 
     this._windowManager = new WindowManager()
     // Immediately load persisted session data from disk
@@ -315,7 +317,6 @@ export default class Zettlr {
     // algorithms will make sure the roots will appear one after another in the
     // main window.
     this.openWindow()
-
     let start = Date.now()
     // First: Initially load all paths
     for (let p of global.config.get('openPaths') as string[]) {
@@ -365,6 +366,9 @@ export default class Zettlr {
 
     // Finally, initiate a first check for updates
     global.updates.check()
+
+    //  Init the tray icon
+    this.tray = this.initTray()
   }
 
   /**
@@ -839,5 +843,19 @@ export default class Zettlr {
    */
   prompt (options: any): void {
     this._windowManager.prompt(options)
+  }
+
+  /**
+   * Initialize the tray icon
+   */
+  initTray (): Tray {
+    let tray = new Tray('source/main/assets/icons/128x128.png')
+    const contextMenu = Menu.buildFromTemplate([
+      { label: 'Item1', type: 'radio' },
+      { label: 'Item2', type: 'radio' }
+    ])
+    tray.setToolTip('This is my application.')
+    tray.setContextMenu(contextMenu)
+    return tray
   }
 }

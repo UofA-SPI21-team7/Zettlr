@@ -39,3 +39,8 @@ eslint_report.htm
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+.idea/inspectionProfiles/Project_Default.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/Zettlr.iml
