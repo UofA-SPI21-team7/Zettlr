@@ -367,8 +367,8 @@ export default class Zettlr {
     // Finally, initiate a first check for updates
     global.updates.check()
 
-    //  Init the tray icon
-    this.tray = this.initTray()
+    // Initialize the tray icon
+    this.initTray()
   }
 
   /**
@@ -847,15 +847,19 @@ export default class Zettlr {
 
   /**
    * Initialize the tray icon
+   *
+   * @return  {Tray}  tray class to manage the tray icon
    */
-  initTray (): Tray {
-    let tray = new Tray('source/main/assets/icons/128x128.png')
+  initTray (): void {
+    let tempTray = new Tray('source/main/assets/icons/128x128.png') // Assign the icon image
+    // Define a context menu, triggered when right click the tray icon
     const contextMenu = Menu.buildFromTemplate([
-      { label: 'Item1', type: 'radio' },
-      { label: 'Item2', type: 'radio' }
+      { label: 'Show Zettlr', type: 'normal' },
+      { label: 'Quit', type: 'normal' }
     ])
-    tray.setToolTip('This is my application.')
-    tray.setContextMenu(contextMenu)
-    return tray
+    tempTray.setToolTip('Zettlr editor') // A tooltip when move the cursor on the icon
+    tempTray.setContextMenu(contextMenu) // Set the context menu to tray icon
+    this.tray = tempTray
+    global.log.info('Successfully initialize the tray icon') //
   }
 }
