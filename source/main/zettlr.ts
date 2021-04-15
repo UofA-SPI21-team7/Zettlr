@@ -38,7 +38,7 @@ export default class Zettlr {
   _openPaths: any
   _fsal: FSAL
   _commands: any[]
-  tray: any
+  tray: Tray|null
   private readonly _windowManager: WindowManager
   private readonly isShownFor: string[]
 
@@ -847,19 +847,17 @@ export default class Zettlr {
 
   /**
    * Initialize the tray icon
-   *
-   * @return  {Tray}  tray class to manage the tray icon
    */
   initTray (): void {
-    let tempTray = new Tray('source/main/assets/icons/128x128.png') // Assign the icon image
+    this.tray = new Tray('source/main/assets/icons/128x128.png') // Assign the icon image
     // Define a context menu, triggered when right click the tray icon
     const contextMenu = Menu.buildFromTemplate([
       { label: 'Show Zettlr', type: 'normal' },
+      { type: 'separator' },
       { label: 'Quit', type: 'normal' }
     ])
-    tempTray.setToolTip('Zettlr editor') // A tooltip when move the cursor on the icon
-    tempTray.setContextMenu(contextMenu) // Set the context menu to tray icon
-    this.tray = tempTray
+    this.tray.setToolTip('Zettlr editor') // A tooltip when move the cursor on the icon
+    this.tray.setContextMenu(contextMenu) // Set the context menu to tray icon
     global.log.info('Successfully initialize the tray icon') //
   }
 }
