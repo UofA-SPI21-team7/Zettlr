@@ -180,6 +180,9 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
+      - name: Set up GitHub hosted runner
+        run: sudo bash ../scripts/setup-github-hosted-runner.sh
+        working-directory: ./resources
       - name: Setup NodeJS 14.17
         uses: actions/setup-node@v1
         with:
